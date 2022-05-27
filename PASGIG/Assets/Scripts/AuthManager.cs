@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class AuthManager : MonoBehaviour
 {
+    public static AuthManager instance;
     //Firebase variables
     [Header("Firebase")]
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;    
     public FirebaseUser User;
+    public DatabaseReference DBreference;
 
     //Login variables
     [Header("Login")]
@@ -50,6 +54,7 @@ public class AuthManager : MonoBehaviour
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
+        DBreference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     //Function for the login button
@@ -105,10 +110,15 @@ public class AuthManager : MonoBehaviour
             //User is now logged in
             //Now get the result
             User = LoginTask.Result; 
-            //TODO: store user data to display on lobby screen
+            //store user data to retrieve data from realtimeDB
+            PlayerInfo.User = User;
             Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
             warningLoginText.text = "";
             confirmLoginText.text = "Welcome back!";
+            //transition to lobby
+            yield return new WaitForSeconds(2);
+            SceneManager.LoadScene("Lobby");
+
         }
     }
 
@@ -182,7 +192,6 @@ public class AuthManager : MonoBehaviour
                     }
                     else
                     {
-                        //Username is now set
                         //Now return to login screen
                         warningRegisterText.text = "Registration complete! Returning to login screen";
                         yield return new WaitForSeconds(2);
