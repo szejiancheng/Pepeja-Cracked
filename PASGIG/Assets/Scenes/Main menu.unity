@@ -338,7 +338,7 @@ RectTransform:
   m_GameObject: {fileID: 1025509174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.46, y: 1.46, z: 1.46}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1039031934}
@@ -347,7 +347,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 34.7}
-  m_SizeDelta: {x: 527.1, y: 34.4}
+  m_SizeDelta: {x: 558.5, y: 34.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1025509176
 MonoBehaviour:
@@ -369,7 +369,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PASIG (Planes and some guns I guess)
+  m_text: PASGIG (Planes and some guns I guess)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4b75105f5fc28b149b1cc2ceb0b468da, type: 2}
   m_sharedMaterial: {fileID: 1726344022544333831, guid: 4b75105f5fc28b149b1cc2ceb0b468da, type: 2}
@@ -1182,7 +1182,7 @@ GameObject:
   - component: {fileID: 2132230966}
   - component: {fileID: 2132230965}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Main intro UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
