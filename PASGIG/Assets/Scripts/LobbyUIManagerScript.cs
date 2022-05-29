@@ -23,8 +23,8 @@ public class LobbyUIManagerScript : MonoBehaviour
         }
     }
 
-    //Functions to change the login screen UI
-    public void LobbyScreen() //Back button
+    //Functions to change the lobby screen UI
+    public void LobbyScreen()
     {
         obj1.SetActive(true);
         //ClearAllText();

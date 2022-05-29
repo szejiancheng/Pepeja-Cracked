@@ -7,25 +7,27 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LoadManager : MonoBehaviour
 {   
 
-    public static LoadManager instance;
+    public LoadManager instance;
     public bool FirstTimeLogin = false;
     public string Username;
-    public int GamesPlayed;
-    public int GamesWon;
-    public int HighScore;
+    public string GamesPlayed;
+    public string GamesWon;
+    public string HighScore;
     private DatabaseReference DBreference;
     private Firebase.Auth.FirebaseAuth auth;
     private FirebaseUser User;
 
-    [Header("Basic Info References")]
-    [SerializeField]
-    public TMP_Text usernameText;
-    [SerializeField]
-    public TMP_Text emailText;
+    [Header("Basic Field References")]
+    public TMP_Text usernameTextField;
+    public TMP_Text emailTextField;
+    public TMP_Text GamesPlayedField;
+    public TMP_Text GamesWonField;
+    public TMP_Text HighScoreField;
 
 
 
@@ -50,7 +52,12 @@ public class LoadManager : MonoBehaviour
         Debug.Log("Loading user data");
         //usernameText.text = AuthManager.instance.User.DisplayName;
         //emailText.text = AuthManager.instance.User.Email;
-        usernameText.text = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+        //usernameText.text = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+        User = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser;
+        DBreference = FirebaseDatabase.DefaultInstance.RootReference;
+        Debug.Log("Fetching user data");
+        StartCoroutine(LoadUserData());
+        
 
         /*
         if (AuthManager.instance).user != null)
@@ -77,7 +84,31 @@ public class LoadManager : MonoBehaviour
 
     }
     */
-    /*
+
+   public void onClickDemo () {
+       SceneManager.LoadScene("Game");
+   }
+
+    void updatefields()
+    {
+        Debug.Log("Fetched User Data");
+        Debug.Log("Assigning User Data");
+        usernameTextField.text = Username;
+        GamesPlayedField.text = GamesPlayed;
+        GamesWonField.text = GamesWon;
+        HighScoreField.text = HighScore;
+        Debug.Log("Below is the username for debugging");
+        Debug.Log(Username);
+        Debug.Log("Below is the GamesPlayed for debugging");
+        Debug.Log(GamesPlayed);
+        Debug.Log("Below is the GamesWon for debugging");
+        Debug.Log(GamesWon);
+
+
+        Debug.Log("Loading Lobby Screen");
+        LobbyUIManagerScript.instance.LobbyScreen();
+    }
+    
 
     private IEnumerator LoadUserData()
     {
@@ -94,28 +125,36 @@ public class LoadManager : MonoBehaviour
         else if (DBTask.Result.Value == null)
         {
             //No data exists yet
+            Debug.Log("Initializing user data (first time sign in)");
             FirstTimeLogin = true;
 
             StartCoroutine(UpdateUsernameDatabase(User.DisplayName));
             Username = User.DisplayName;
             
             StartCoroutine(UpdateGamesPlayed(0));
-            GamesPlayed = 0;
+            GamesPlayed = "0";
 
             StartCoroutine(UpdateGamesWon(0));
-            GamesWon = 0;
+            GamesWon = "0";
 
             StartCoroutine(UpdateHighScore(0));
-            HighScore = 0;
+            HighScore = "0";
+            updatefields();
         }
         else
         {
             //Data has been retrieved
             DataSnapshot snapshot = DBTask.Result;
-
+            /*
             GamesPlayed = Convert.ToInt32(snapshot.Child("GamesPlayed").Value.ToString());
             GamesWon = Convert.ToInt32(snapshot.Child("GamesWon").Value.ToString());
             HighScore = Convert.ToInt32(snapshot.Child("HighScore").Value.ToString());
+            */
+            Username = snapshot.Child("username").Value.ToString();
+            GamesPlayed = snapshot.Child("GamesPlayed").Value.ToString();
+            GamesWon = snapshot.Child("GamesWon").Value.ToString();
+            HighScore = snapshot.Child("HighScore").Value.ToString();
+            updatefields();
         }
         
     }
@@ -187,7 +226,4 @@ public class LoadManager : MonoBehaviour
             //HighScores are now updated
         }
     }
-    */
-
-    
 }
