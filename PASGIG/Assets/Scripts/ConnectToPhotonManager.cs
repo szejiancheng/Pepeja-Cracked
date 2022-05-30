@@ -11,12 +11,11 @@ public class ConnectToPhotonManager : MonoBehaviourPunCallbacks
 
     
     public TMP_Text buttonText;
-    public LoadManager loadmanager;
     public string username; 
 
     public void OnClickConnect() {
         Debug.Log("Clicked connect button");
-        username = loadmanager.instance.Username;
+        username = LoadManager.GetInstance().Username;
         if (username.Length >= 1) {
             PhotonNetwork.NickName = username;
             buttonText.text = "Connecting...";

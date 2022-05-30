@@ -34,27 +34,27 @@ public class UIManager : MonoBehaviour
     public void LoginScreen() //Back button
     {
         loginUI.SetActive(true);
-        ClearAllText();
+        //ClearAllText();
         registerUI.SetActive(false);
         
     }
     public void RegisterScreen() // Register button
     {
         loginUI.SetActive(false);
-        ClearAllText();
+        //ClearAllText();
         registerUI.SetActive(true);
     }
     public void IntroScreen()
     {
         loginUI.SetActive(false);
-        ClearAllText();
+        //ClearAllText();
         IntroUI.SetActive(true);
     }
 
     public void ClearAllText()
     {
         warningLoginText.text = "";
-        warningRegisterText.text = "";
+        //warningRegisterText.text = "";
         confirmLoginText.text = "";
     }
 }

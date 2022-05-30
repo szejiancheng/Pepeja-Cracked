@@ -12,7 +12,32 @@ using UnityEngine.SceneManagement;
 public class LoadManager : MonoBehaviour
 {   
 
-    public LoadManager instance;
+    static LoadManager instance;
+
+    public static LoadManager GetInstance() 
+    {
+        return instance;
+    }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != null)
+        {
+            Debug.Log("Instance already exists, destroying object!");
+            Destroy(this);
+        }
+    }
+
+    private void OnDestroy() 
+    {
+        Debug.Log("LoadManager destroyed");
+        
+    }
+
     public bool FirstTimeLogin = false;
     public string Username;
     public string GamesPlayed;
@@ -28,22 +53,6 @@ public class LoadManager : MonoBehaviour
     public TMP_Text GamesPlayedField;
     public TMP_Text GamesWonField;
     public TMP_Text HighScoreField;
-
-
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != null)
-        {
-            Debug.Log("Instance already exists, destroying object!");
-            Destroy(this);
-        }
-    }
-
 
 
     // Start is called before the first frame update
@@ -97,12 +106,9 @@ public class LoadManager : MonoBehaviour
         GamesPlayedField.text = GamesPlayed;
         GamesWonField.text = GamesWon;
         HighScoreField.text = HighScore;
-        Debug.Log("Below is the username for debugging");
-        Debug.Log(Username);
-        Debug.Log("Below is the GamesPlayed for debugging");
-        Debug.Log(GamesPlayed);
-        Debug.Log("Below is the GamesWon for debugging");
-        Debug.Log(GamesWon);
+        Debug.Log("Username for debugging: " + Username);
+        Debug.Log("GamesPlayed for debugging: " + GamesPlayed);
+        Debug.Log("GamesWon for debugging: " + GamesWon);
 
 
         Debug.Log("Loading Lobby Screen");
