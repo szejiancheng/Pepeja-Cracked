@@ -7,16 +7,25 @@ public class PlaneMovement : MonoBehaviour
 {
     public float Speed;
     public float Acceleration;
-
+    public float RotationControl;
     public Joystick joystick;
 
     Rigidbody2D rb;
 
-    public float RotationControl;
-
+    //Joystick params
     float MovY, MovX = 1;
     Vector2 JoystickDir = Vector2.zero;
-    float wingDrag = 1;
+
+    //Wing behavior
+    public float wingDrag = 1f; //this is for how much you slow down when you turn and how much of
+    //this force gets converted into forward movement, like wingsize
+    public float wingLift = 0.5f; //this for when you don't want your plane to crash (I'd rename it)
+    //crashability but like that's ultimately unhelpful
+
+    //Directional change vars
+    bool rightFacing = true;
+    float timeSinceDirChange = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,46 +39,10 @@ public class PlaneMovement : MonoBehaviour
         MovY = joystick.Vertical;
         MovX = joystick.Horizontal;
         JoystickDir = joystick.Direction;
-
     }
     
     private void FixedUpdate()
     {
-        /* 
-        //x axis controls thrust
-        Vector2 Vel = transform.right * (MovX * Acceleration);
-        rb.AddForce(Vel);
-
-        float Dir = Vector2.Dot(rb.velocity, rb.GetRelativeVector(Vector2.right));
-
-        if(Acceleration > 0)
-        {
-            if(Dir > 0)
-            {
-                rb.rotation += MovY * RotationControl *(rb.velocity.magnitude / Speed);
-            }
-            else
-            {
-                rb.rotation -= MovY * RotationControl *(rb.velocity.magnitude / Speed);
-            }
-        }
-
-        float thrustForce = Vector2.Dot(rb.velocity, rb.GetRelativeVector(Vector2.down)) * 2.0f;
-
-        Vector2 relForce = Vector2.up * thrustForce;
-
-        rb.AddForce(rb.GetRelativeVector(relForce));
-
-
-        if(rb.velocity.magnitude > Speed)
-        {
-            rb.velocity = rb.velocity.normalized * Speed;
-        } */
-
-
-        //feels like the proper implementation is:
-        //magnitude controls thrust
-        //turn object towards desired vector
         float joystickMagnitude = (float) Math.Sqrt(MovX*MovX + MovY*MovY);
         Vector2 Vel = transform.right * (joystickMagnitude * Acceleration);
         rb.AddForce(Vel);
@@ -77,6 +50,7 @@ public class PlaneMovement : MonoBehaviour
         
         if(Acceleration > 0)
         {
+            //transform.right will be fixed as the forward direction
             float Dir = Vector2.SignedAngle(JoystickDir, transform.right);
             rb.rotation -= Dir * RotationControl;
         }
@@ -87,16 +61,45 @@ public class PlaneMovement : MonoBehaviour
         }
 
         //adding wing drag
-        rb.AddForce(wingDrag * transform.up.normalized * Vector2.Dot(transform.up, rb.velocity) * -1.0f);
-        //rb.velocity -= rb.velocity * wingDrag * (transform.up + transform.right) * 5.0f;
+        Vector2 bleed = wingDrag * transform.up.normalized * Vector2.Dot(transform.up, rb.velocity);
+        rb.AddForce(bleed * -1.0f);
+        rb.AddForce(bleed.magnitude * transform.right);
 
-        //adding nose droop
+        //adding nose droop like when control surfaces are disabled
         if(MovX == 0 && MovY == 0)
         {
             float Dir = Vector2.SignedAngle(rb.velocity, transform.right);
-            rb.rotation -= Dir * RotationControl * 8;
+            rb.rotation -= Dir * RotationControl;
         }
-        //TODO: Properly implement wing simulation
-    
+
+        //adding wing lift
+        rb.AddForce(rb.velocity.x * transform.up * wingLift);
+        /*
+        float horizontalVelocity = Vector2.Dot(rb.velocity, Vector2.right);
+        rb.AddForce(horizontalVelocity * Vector2.up * wingLift);
+        */
+
+        //adding check to flip y scale of playerobject
+        //
+        if(rb.velocity.x < 0)
+        {
+            if (rightFacing)
+            {
+                rightFacing = false;
+                Flip();
+            }
+        } else 
+        {
+            if (!rightFacing)
+            {
+                rightFacing = true;
+                Flip();
+            }
+        }
     }
+    private void Flip()
+	{
+        //TODO: trigger to activate animation
+		transform.Rotate(180f, 0f, 0f);
+	}
 }
