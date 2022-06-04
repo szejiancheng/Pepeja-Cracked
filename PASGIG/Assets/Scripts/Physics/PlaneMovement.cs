@@ -12,6 +12,17 @@ public class PlaneMovement : MonoBehaviour
 
     Rigidbody2D rb;
 
+
+    public Animator afterburnerAnimator;
+    private string currentState;
+
+    //Animation states
+    const string AFTERBURNER_IDLE = "idle";
+    const string AFTERBURNER_P1 = "Power 1";
+    const string AFTERBURNER_P2 = "Power 2";
+    const string AFTERBURNER_P3 = "Power 3";
+
+
     //Joystick params
     float MovY, MovX = 1;
     Vector2 JoystickDir = Vector2.zero;
@@ -43,11 +54,33 @@ public class PlaneMovement : MonoBehaviour
     
     private void FixedUpdate()
     {
+
+
         float joystickMagnitude = (float) Math.Sqrt(MovX*MovX + MovY*MovY);
+
+        //adding thrust based on magnitude of joystick displacement
         Vector2 Vel = transform.right * (joystickMagnitude * Acceleration);
         rb.AddForce(Vel);
 
-        
+
+        //changing animation state of afterburner
+        if (joystickMagnitude == 0)
+        {
+            ChangeAnimationState(AFTERBURNER_IDLE);
+        } else if (joystickMagnitude > 0 && joystickMagnitude < 0.33f)
+        {
+            ChangeAnimationState(AFTERBURNER_P1);
+        }
+        else if (joystickMagnitude >= 0.33f && joystickMagnitude < 0.66 )
+        {
+            ChangeAnimationState(AFTERBURNER_P2);
+        }
+        else
+        {
+            ChangeAnimationState(AFTERBURNER_P3);
+        }
+
+        //turning, speed based on rotation control
         if(Acceleration > 0)
         {
             //transform.right will be fixed as the forward direction
@@ -55,6 +88,8 @@ public class PlaneMovement : MonoBehaviour
             rb.rotation -= Dir * RotationControl;
         }
         
+
+        //speed limit enforced using Speed
         if(rb.velocity.magnitude > Speed)
         {
             rb.velocity = rb.velocity.normalized * Speed;
@@ -73,11 +108,12 @@ public class PlaneMovement : MonoBehaviour
         }
 
         //adding wing lift
-        rb.AddForce(rb.velocity.x * transform.up * wingLift);
-        /*
+        //rb.AddForce(rb.velocity.x * transform.up * wingLift);
+        
         float horizontalVelocity = Vector2.Dot(rb.velocity, Vector2.right);
         rb.AddForce(horizontalVelocity * Vector2.up * wingLift);
-        */
+        rb.AddForce(horizontalVelocity * -Vector2.right * wingLift);
+        
 
         //adding check to flip y scale of playerobject
         //
@@ -102,4 +138,13 @@ public class PlaneMovement : MonoBehaviour
         //TODO: trigger to activate animation
 		transform.Rotate(180f, 0f, 0f);
 	}
+
+    void ChangeAnimationState(string newState)
+    {
+        //stop the same animation from interrupting itself
+        if (currentState == newState) return;
+
+        //play the animation
+        afterburnerAnimator.Play(newState);
+    }
 }
