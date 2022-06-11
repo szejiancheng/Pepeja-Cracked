@@ -26,12 +26,12 @@ public class PlaneMovement : MonoBehaviour
     //Joystick params
     float MovY, MovX = 1;
     Vector2 JoystickDir = Vector2.zero;
+    float joystickMagnitude = 0;
 
     //Wing behavior
     public float wingDrag = 1f; //this is for how much you slow down when you turn and how much of
     //this force gets converted into forward movement, like wingsize
-    public float wingLift = 0.5f; //this for when you don't want your plane to crash (I'd rename it)
-    //crashability but like that's ultimately unhelpful
+    public float efficiency = 0.7f;
 
     //Directional change vars
     bool rightFacing = true;
@@ -56,49 +56,25 @@ public class PlaneMovement : MonoBehaviour
     {
 
 
-        float joystickMagnitude = (float) Math.Sqrt(MovX*MovX + MovY*MovY);
+        joystickMagnitude = (float) Math.Sqrt(MovX*MovX + MovY*MovY);
+        //changing animation state of afterburner
+        UpdateAnimation();
+        
 
         //adding thrust based on magnitude of joystick displacement
-        Vector2 Vel = transform.right * (joystickMagnitude * Acceleration);
-        rb.AddForce(Vel);
-
-
-        //changing animation state of afterburner
-        if (joystickMagnitude == 0)
-        {
-            ChangeAnimationState(AFTERBURNER_IDLE);
-        } else if (joystickMagnitude > 0 && joystickMagnitude < 0.33f)
-        {
-            ChangeAnimationState(AFTERBURNER_P1);
-        }
-        else if (joystickMagnitude >= 0.33f && joystickMagnitude < 0.66 )
-        {
-            ChangeAnimationState(AFTERBURNER_P2);
-        }
-        else
-        {
-            ChangeAnimationState(AFTERBURNER_P3);
-        }
+        rb.AddForce(CalculateThrust());
+        //adding wing drag
+        //adding forward translated movement: depends on angle hitting wing
+        rb.AddForce(CalculateWingPhysics());
 
         //turning, speed based on rotation control
-        if(Acceleration > 0)
-        {
-            //transform.right will be fixed as the forward direction
-            float Dir = Vector2.SignedAngle(JoystickDir, transform.right);
-            rb.rotation -= Dir * RotationControl;
-        }
-        
+        pitch();
 
         //speed limit enforced using Speed
         if(rb.velocity.magnitude > Speed)
         {
             rb.velocity = rb.velocity.normalized * Speed;
         }
-
-        //adding wing drag
-        Vector2 bleed = wingDrag * transform.up.normalized * Vector2.Dot(transform.up, rb.velocity);
-        rb.AddForce(bleed * -1.0f);
-        rb.AddForce(bleed.magnitude * transform.right);
 
         //adding nose droop like when control surfaces are disabled
         if(MovX == 0 && MovY == 0)
@@ -107,16 +83,7 @@ public class PlaneMovement : MonoBehaviour
             rb.rotation -= Dir * RotationControl;
         }
 
-        //adding wing lift
-        //rb.AddForce(rb.velocity.x * transform.up * wingLift);
-        
-        float horizontalVelocity = Vector2.Dot(rb.velocity, Vector2.right);
-        rb.AddForce(horizontalVelocity * Vector2.up * wingLift);
-        rb.AddForce(horizontalVelocity * -Vector2.right * wingLift);
-        
-
         //adding check to flip y scale of playerobject
-        //
         if(rb.velocity.x < 0)
         {
             if (rightFacing)
@@ -146,5 +113,57 @@ public class PlaneMovement : MonoBehaviour
 
         //play the animation
         afterburnerAnimator.Play(newState);
+    }
+
+    private Vector2 CalculateThrust() 
+    {
+        Vector2 thrust = transform.right * (joystickMagnitude * Acceleration);
+        Debug.DrawLine(transform.position, (Vector2) transform.position + thrust, Color.yellow, 0.0f);
+        return thrust;
+    }
+
+    void UpdateAnimation()
+    {
+        if (joystickMagnitude == 0)
+        {
+            ChangeAnimationState(AFTERBURNER_IDLE);
+        } else if (joystickMagnitude > 0 && joystickMagnitude < 0.33f)
+        {
+            ChangeAnimationState(AFTERBURNER_P1);
+        }
+        else if (joystickMagnitude >= 0.33f && joystickMagnitude < 0.66 )
+        {
+            ChangeAnimationState(AFTERBURNER_P2);
+        }
+        else
+        {
+            ChangeAnimationState(AFTERBURNER_P3);
+        }
+    }
+
+    void pitch()
+    {
+        if(Acceleration > 0)
+        {
+            //transform.right will be fixed as the forward direction
+            float Dir = Vector2.SignedAngle(JoystickDir, transform.right);
+            rb.rotation -= Dir * RotationControl;
+        }
+    }
+    Vector2 CalculateWingPhysics()
+    {
+        //component perpendicular to wing
+        Vector2 velocity = rb.velocity;
+        Vector2 up = transform.up;
+        float dot = Vector2.Dot(up, velocity);
+        Vector2 drag = up * dot * -1.0f * wingDrag;
+        Debug.DrawLine(transform.position, (Vector2) transform.position + drag, Color.green, 0.0f);
+
+        //component parallel to wing
+        float angleOfAttack = Vector2.Angle(transform.right, rb.velocity);
+        Vector2 forwardMomentum = drag.magnitude * transform.right * efficiency * (1.0f - (angleOfAttack/90));
+        Debug.DrawLine(transform.position, (Vector2) transform.position + forwardMomentum, Color.red, 0.0f);
+
+        return drag + forwardMomentum;
     }
 }
