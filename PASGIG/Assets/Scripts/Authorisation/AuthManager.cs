@@ -14,7 +14,6 @@ public class AuthManager : MonoBehaviour
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;    
     public FirebaseUser User;
-    public DatabaseReference DBreference;
 
     //Login variables
     [Header("Login")]
@@ -31,6 +30,7 @@ public class AuthManager : MonoBehaviour
     public TMP_InputField passwordRegisterVerifyField;
     public TMP_Text warningRegisterText;
 
+    /*
     void Awake()
     {
         //Check that all of the necessary dependencies for Firebase are present on the system
@@ -48,14 +48,97 @@ public class AuthManager : MonoBehaviour
             }
         });
     }
+    */
+
+    private void Start() 
+    {
+        StartCoroutine(CheckAndFixDependencies());
+    }
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+        } else if (instance != this) {
+            Destroy(instance.gameObject);
+            instance = this;
+        }
+    }
+
+    private IEnumerator CheckAndFixDependencies()
+    {
+        var checkAndFixDependanciesTask = FirebaseApp.CheckAndFixDependenciesAsync();
+        yield return new WaitUntil(predicate: () => checkAndFixDependanciesTask.IsCompleted);
+
+        var dependancyResult = checkAndFixDependanciesTask.Result;
+
+        if (dependancyResult == DependencyStatus.Available)
+        {
+            InitializeFirebase();
+        }
+        else 
+        {
+            Debug.LogError($"Could not resolve all Firebase dependancies: {dependancyResult}");
+        }
+    }
 
     private void InitializeFirebase()
     {
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
-        DBreference = FirebaseDatabase.DefaultInstance.RootReference;
+        StartCoroutine(CheckAutoLogin());
+        auth.StateChanged += AuthStateChanged;
+        AuthStateChanged(this, null);
     }
+
+    private void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    {
+        if (auth.CurrentUser != User)
+        {
+            bool signedIn = User != auth.CurrentUser && auth.CurrentUser != null;
+            if (!signedIn && User != null)
+            {
+                Debug.Log("Signed Out");
+            }
+            User = auth.CurrentUser;
+            if (signedIn)
+            {
+                Debug.Log($"Signed In: {User.DisplayName}");
+            }
+        }
+    }
+
+    private IEnumerator CheckAutoLogin()
+    {
+        yield return new WaitForEndOfFrame();
+        if (User != null)
+        {
+            var reloadTask = User.ReloadAsync();
+            yield return new WaitUntil(predicate: () => reloadTask.IsCompleted);
+
+            AutoLogin();
+        }
+        else
+        {
+            UIManager.instance.LoginScreen();
+        }
+    }
+    private void AutoLogin()
+    {
+        if (User != null)
+        {
+            SceneManager.LoadScene("Lobby");
+        }
+        else
+        {
+            UIManager.instance.LoginScreen();
+        }
+    }
+
+    
 
     //Function for the login button
     public void LoginButton()

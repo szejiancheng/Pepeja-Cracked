@@ -36,17 +36,22 @@ public class UIManager : MonoBehaviour
         loginUI.SetActive(true);
         //ClearAllText();
         registerUI.SetActive(false);
+        IntroUI.SetActive(false);
         
     }
     public void RegisterScreen() // Register button
     {
         loginUI.SetActive(false);
+        IntroUI.SetActive(false);
+
         //ClearAllText();
         registerUI.SetActive(true);
     }
     public void IntroScreen()
     {
         loginUI.SetActive(false);
+        registerUI.SetActive(false);
+
         //ClearAllText();
         IntroUI.SetActive(true);
     }
