@@ -114,7 +114,7 @@ public class AuthManager : MonoBehaviour
             PlayerInfo.User = User;
             Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
             warningLoginText.text = "";
-            confirmLoginText.text = "Welcome back!";
+            confirmLoginText.text = "Signing In...";
             //transition to lobby
             yield return new WaitForSeconds(2);
             SceneManager.LoadScene("Lobby");

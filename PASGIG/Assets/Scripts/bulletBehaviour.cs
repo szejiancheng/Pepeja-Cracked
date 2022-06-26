@@ -11,7 +11,6 @@ public class bulletBehaviour : MonoBehaviour
     void Start ()
     {
         rb.AddForce(transform.right * speed, ForceMode2D.Impulse);
-        Debug.Log(rb.velocity.magnitude);
     }
 
     private void Update()
@@ -23,5 +22,19 @@ public class bulletBehaviour : MonoBehaviour
     private void Explode () 
     {
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //Debug.Log("We hit something!");
+        //Debug.Log(collision.gameObject.tag);
+        /*
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            Explode();
+        }
+        */
+
+        Explode();
     }
 }

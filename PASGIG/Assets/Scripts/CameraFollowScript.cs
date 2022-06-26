@@ -58,7 +58,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         Vector2 centerPoint = GetCenterPoint();
         //Vector2 newPosition = centerPoint + offset;
-        transform.position = Vector2.MoveTowards(transform.position, centerPoint, smoothTime);
+        transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
         //transform.position = centerPoint;
     }
 
@@ -74,7 +74,11 @@ public class CameraFollowScript : MonoBehaviour
         var bounds = new Bounds(player.transform.position, Vector2.zero);
         for (int i = 0; i < targets.Count; i++)
         {
-            bounds.Encapsulate(targets[i].transform.position);
+            if (targets[i].tag == "Landscape") {
+                bounds.Encapsulate(targets[i].ClosestPoint(player.transform.position));
+            } else {
+                bounds.Encapsulate(targets[i].transform.position);
+            }
         }
         return bounds.size.magnitude;
     }
@@ -88,7 +92,14 @@ public class CameraFollowScript : MonoBehaviour
         var bounds = new Bounds(player.transform.position, Vector2.zero);
         for (int i = 0; i < targets.Count; i++)
         {
-            bounds.Encapsulate(targets[i].transform.position);
+            if (targets[i] == null){
+            }else if (targets[i].tag == "Landscape") {
+                bounds.Encapsulate(targets[i].ClosestPoint(player.transform.position));
+            }else if (targets[i].tag == "Bullet") {
+
+            } else {
+                bounds.Encapsulate(targets[i].transform.position);
+            }
         }
         return bounds.center;
     }
