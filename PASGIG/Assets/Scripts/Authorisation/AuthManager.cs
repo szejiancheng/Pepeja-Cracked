@@ -30,25 +30,7 @@ public class AuthManager : MonoBehaviour
     public TMP_InputField passwordRegisterVerifyField;
     public TMP_Text warningRegisterText;
 
-    /*
-    void Awake()
-    {
-        //Check that all of the necessary dependencies for Firebase are present on the system
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
-        {
-            dependencyStatus = task.Result;
-            if (dependencyStatus == DependencyStatus.Available)
-            {
-                //If they are avalible Initialize Firebase
-                InitializeFirebase();
-            }
-            else
-            {
-                Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
-            }
-        });
-    }
-    */
+    
 
     private void Start() 
     {
@@ -121,10 +103,6 @@ public class AuthManager : MonoBehaviour
 
             AutoLogin();
         }
-        else
-        {
-            UIManager.instance.LoginScreen();
-        }
     }
     private void AutoLogin()
     {
@@ -146,6 +124,16 @@ public class AuthManager : MonoBehaviour
         //Call the login coroutine passing the email and password
         StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
     }
+
+    //Function for the logout button
+    public void LogOutButton()
+    {
+        //Call the login coroutine passing the email and password
+        auth.SignOut();
+        SceneManager.LoadScene("Main Menu");
+
+    }
+
     //Function for the register button
     public void RegisterButton()
     {

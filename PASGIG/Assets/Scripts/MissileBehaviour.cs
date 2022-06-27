@@ -16,7 +16,6 @@ public class MissileBehaviour : MonoBehaviour
     {
         rb.AddForce(transform.right * speed, ForceMode2D.Impulse);
         player = GameObject.FindWithTag("Player").transform;
-        Debug.Log(rb.velocity.magnitude);
     }
 
     // Update is called once per frame

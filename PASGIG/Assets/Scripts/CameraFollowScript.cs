@@ -58,7 +58,20 @@ public class CameraFollowScript : MonoBehaviour
     {
         Vector2 centerPoint = GetCenterPoint();
         //Vector2 newPosition = centerPoint + offset;
-        transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
+        /*
+        Vector2 VectorToTargetPos = (Vector2) transform.position - centerPoint;
+        float distToTargetPos = VectorToTargetPos.magnitude;
+        Debug.Log(distToTargetPos);
+        if (distToTargetPos > 10 || distToTargetPos < -10){
+            transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
+        }
+        */
+
+        //transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
+        //transform.position = Vector2.Lerp(transform.position, centerPoint, 0.6f*Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, centerPoint, 50.0f*Time.deltaTime);
+
+        
         //transform.position = centerPoint;
     }
 

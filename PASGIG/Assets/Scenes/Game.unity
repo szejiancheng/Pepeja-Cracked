@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 9504023}
   - component: {fileID: 9504022}
   - component: {fileID: 9504021}
+  - component: {fileID: 9504024}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -315,6 +316,18 @@ MonoBehaviour:
   healthBar: {fileID: 553875212}
   gameover: {fileID: 1830217303}
   playerscore: {fileID: 9504021}
+--- !u!114 &9504024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9504013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4c38bab0c42094bb270e2ad3742b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &40284114
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,8 +928,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kamikazePrefab: {fileID: 5351290610603275148, guid: 379e8d243d2edd84aa9a34e5f8374e28, type: 3}
   turretPrefab: {fileID: 4820914201176563821, guid: f348667e9e6de694fa5f8a3980751b98, type: 3}
-  kamikazeInterval: 3.5
-  turretInterval: 10
+  kamikazeInterval: 1.5
+  turretInterval: 40
   MaxX: 280
   MinX: -90
   MaxY: 50
@@ -4047,8 +4060,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3280b5148304d84c9ef805f5617bdb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: -1, y: 0}
-  smoothTime: 0.3
+  offset: {x: 0, y: 0}
+  smoothTime: 0.6
   minZoom: 60
   maxZoom: 20
   zoomLimiter: 50
