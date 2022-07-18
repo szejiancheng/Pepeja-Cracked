@@ -17,6 +17,7 @@ public class CameraFollowScript : MonoBehaviour
     public float zoomLimiter = 30f;
     public float detectionRadius = 60f;
     public Collider2D player;
+    public float CameraSpeed = 500f;
 
 
     public List<Collider2D> targets = new List<Collider2D>();
@@ -33,19 +34,27 @@ public class CameraFollowScript : MonoBehaviour
     
     private void Update()
     {
-        Physics2D.OverlapCircle(player.transform.position, detectionRadius, filter, targets);
         //foreach (Collider2D collider in targets) {
         //    Debug.Log(collider);
         //}
-        targets.Add(player);
+        if (player != null) 
+        {
+            targets.Add(player);
+        } else 
+        {
+            player = GameObject.FindWithTag("Player").GetComponent<Collider2D>();
+            Debug.Log("Player reference: " + player);
+        }
+        Physics2D.OverlapCircle(player.transform.position, detectionRadius, filter, targets);
+
     }
     
     
 
 
-    void LateUpdate() 
+    void FixedUpdate() 
     {
-        if (targets.Count == 0)
+        if (targets.Count == 0 || player == null)
         {
             return;
         }
@@ -69,7 +78,7 @@ public class CameraFollowScript : MonoBehaviour
 
         //transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
         //transform.position = Vector2.Lerp(transform.position, centerPoint, 0.6f*Time.deltaTime);
-        transform.position = Vector2.MoveTowards(transform.position, centerPoint, 50.0f*Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, centerPoint, CameraSpeed*Time.deltaTime);
 
         
         //transform.position = centerPoint;

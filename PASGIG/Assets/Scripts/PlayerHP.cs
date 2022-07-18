@@ -12,6 +12,13 @@ public class PlayerHP : MonoBehaviour
     public GameOverScript gameover;
     public PlayerScore playerscore;
 
+    public PlayerMain playerscript;
+
+    void Awake()
+    {
+        playerscript = gameObject.GetComponent<PlayerMain>();
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,14 +27,7 @@ public class PlayerHP : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(20);
-        }
-    }
+    
 
     public void TakeDamage(int damage)
     {
@@ -50,6 +50,6 @@ public class PlayerHP : MonoBehaviour
 
     void GameOver()
     {
-        gameover.InitScore(playerscore.score);
+        //gameover.InitScore(playerscore.score);
     }
 }

@@ -55,13 +55,9 @@ public class LoadManager : MonoBehaviour
     public TMP_Text HighScoreField;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Loading user data");
-        //usernameText.text = AuthManager.instance.User.DisplayName;
-        //emailText.text = AuthManager.instance.User.Email;
-        //usernameText.text = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
         User = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser;
         DBreference = FirebaseDatabase.DefaultInstance.RootReference;
         Debug.Log("Fetching user data");

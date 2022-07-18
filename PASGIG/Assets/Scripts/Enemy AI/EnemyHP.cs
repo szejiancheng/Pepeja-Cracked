@@ -19,7 +19,6 @@ public class EnemyHP : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        //healthBar.SetHealth(currentHealth, maxHealth);
     }
 
     // Update is called once per frame
@@ -30,9 +29,6 @@ public class EnemyHP : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
-        //healthBar.SetHealth(currentHealth, maxHealth);
-
         if(currentHealth <= 0)
         {
             EnemyDestroyed();
