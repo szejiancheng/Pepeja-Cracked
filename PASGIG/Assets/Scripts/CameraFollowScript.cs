@@ -28,25 +28,24 @@ public class CameraFollowScript : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        targets.Add(player);
     }
 
     
     private void Update()
     {
-        //foreach (Collider2D collider in targets) {
-        //    Debug.Log(collider);
-        //}
         if (player != null) 
         {
             targets.Add(player);
+            Physics2D.OverlapCircle(player.transform.position, detectionRadius, filter, targets);
         } else 
         {
-            player = GameObject.FindWithTag("Player").GetComponent<Collider2D>();
-            Debug.Log("Player reference: " + player);
+            if (GameObject.FindWithTag("Player") != null)
+            {
+                player = GameObject.FindWithTag("Player").GetComponentInChildren<Collider2D>();
+                Debug.Log("Player reference: " + player);
+            }
         }
-        Physics2D.OverlapCircle(player.transform.position, detectionRadius, filter, targets);
-
+        
     }
     
     
@@ -76,9 +75,9 @@ public class CameraFollowScript : MonoBehaviour
         }
         */
 
-        //transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
+        transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
         //transform.position = Vector2.Lerp(transform.position, centerPoint, 0.6f*Time.deltaTime);
-        transform.position = Vector2.MoveTowards(transform.position, centerPoint, CameraSpeed*Time.deltaTime);
+        //transform.position = Vector2.MoveTowards(transform.position, centerPoint, CameraSpeed*Time.deltaTime);
 
         
         //transform.position = centerPoint;
@@ -102,6 +101,7 @@ public class CameraFollowScript : MonoBehaviour
                 bounds.Encapsulate(targets[i].transform.position);
             }
         }
+        bounds.Encapsulate(transform.position);
         return bounds.size.magnitude;
     }
     Vector2 GetCenterPoint()

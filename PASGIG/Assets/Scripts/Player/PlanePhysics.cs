@@ -31,7 +31,6 @@ public class PlanePhysics : MonoBehaviour
     {
         playermain = GetComponent<PlayerMain>();
         leftFacing = (Vector2.Dot(-transform.right, Vector2.right) < 0);
-        Debug.Log("Leftfacing isTrue: " + leftFacing);
         if (!leftFacing){
             Flip();
         }
@@ -74,8 +73,6 @@ public class PlanePhysics : MonoBehaviour
             playermain.rb.rotation -= Dir * RotationControl;
         }
         
-        
-        
         //adding check to flip X scale of playerobject
         if(playermain.rb.velocity.x > 0)
         {
@@ -98,9 +95,7 @@ public class PlanePhysics : MonoBehaviour
     private void Flip()
 	{
         //TODO: trigger to activate animation
-		//transform.Rotate(180f, 0f, 0f);
-        //transform.GetChild(1).Rotate(180f, 0f, 0f);
-        gameObject.GetComponent<SpriteRenderer>().flipY = !gameObject.GetComponent<SpriteRenderer>().flipY;
+		transform.Rotate(180f, 0f, 0f);
 	}
 
     private Vector2 CalculateThrust() 
@@ -114,13 +109,9 @@ public class PlanePhysics : MonoBehaviour
     {
         if(Acceleration > 0)
         {
-            
-            //transform.left will be fixed as the forward direction
+            //transform.left (-transform.right) will be fixed as the forward direction
             float Dir = Vector2.SignedAngle(JoystickDir, -transform.right);
             playermain.rb.rotation -= Dir * RotationControl * Time.deltaTime;
-            
-
-
         }
     }
     Vector2 CalculateWingPhysics()

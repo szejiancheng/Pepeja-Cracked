@@ -27,7 +27,7 @@ public class PlayerMain : MonoBehaviour
         playerhp = gameObject.GetComponent<PlayerHP>();
         collision = gameObject.GetComponent<PlayerCollision>();
         joystick = (Joystick) GameObject.Find("Fixed Joystick").GetComponent<Joystick>();
-        //transform.GetChild(1).gameObject.GetComponent<Joystick>(); //this is scary but whatever.
+        Debug.Log("Joystick isnull:" + joystick);
     }
 
     public float getJoyStickX()
