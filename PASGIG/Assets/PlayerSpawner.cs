@@ -15,6 +15,7 @@ public class PlayerSpawner : MonoBehaviour
     void SpawnPlayer()
     {
         player = Instantiate(playerPrefab, getNextSpawnPoint().position, getNextSpawnPoint().rotation);
+        player.GetComponentInChildren<PlanePhysics>().Speed = 500;
         nextSpawnPoint = null;
     }
 

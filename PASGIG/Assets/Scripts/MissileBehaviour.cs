@@ -5,7 +5,7 @@ using UnityEngine;
 public class MissileBehaviour : MonoBehaviour
 {
     public Transform player;
-    public float speed = 40f;
+    public float speed = 50f;
     public Rigidbody2D rb;
     public float maxLifetime = 2.0f;
     private Vector2 movement;
@@ -15,7 +15,11 @@ public class MissileBehaviour : MonoBehaviour
     void Start ()
     {
         rb.AddForce(transform.right * speed, ForceMode2D.Impulse);
-        player = GameObject.FindWithTag("Player").transform;
+
+        if (GameObject.FindWithTag("Player") != null)
+        {
+            player = GameObject.FindWithTag("Player").transform.Find("Player Object");
+        }
     }
 
     // Update is called once per frame

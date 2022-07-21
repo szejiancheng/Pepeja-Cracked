@@ -9,7 +9,11 @@ public class TurretEnemy : MonoBehaviour
 
     float fireRate;
     float nextFire;
+    
+    public Transform target;
+
     // Start is called before the first frame update
+
     void Start()
     {
         fireRate = 5f;
@@ -19,15 +23,23 @@ public class TurretEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckIfTimeToFire();
+        CheckFire();
     }
 
-    void CheckIfTimeToFire()
+    void CheckFire()
     {
-        if(Time.time > nextFire) 
-        {
-            Instantiate(MissilePrefab, muzzle.position, Quaternion.identity * Quaternion.Euler(0, 0, 90));
-            nextFire = Time.time + fireRate;
+        if (GameObject.FindWithTag("Player") != null) {
+            if(Time.time > nextFire) 
+            {
+                SpawnMissile();
+                nextFire = Time.time + fireRate;
+            }
         }
+    }
+
+    void SpawnMissile()
+    {
+        GameObject missile = Instantiate(MissilePrefab, muzzle.position, Quaternion.identity * Quaternion.Euler(0, 0, 90));
+        missile.GetComponent<MissileBehaviour>().speed = 500f;
     }
 }

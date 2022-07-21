@@ -73,6 +73,7 @@ public class PlanePhysics : MonoBehaviour
             playermain.rb.rotation -= Dir * RotationControl;
         }
         
+        
         //adding check to flip X scale of playerobject
         if(playermain.rb.velocity.x > 0)
         {
@@ -112,7 +113,10 @@ public class PlanePhysics : MonoBehaviour
             //transform.left (-transform.right) will be fixed as the forward direction
             float Dir = Vector2.SignedAngle(JoystickDir, -transform.right);
             playermain.rb.rotation -= Dir * RotationControl * Time.deltaTime;
+            //playermain.rb.AddTorque(-Dir * Mathf.Deg2Rad* RotationControl * Time.deltaTime * 1000);
+            //Debug.Log(-Dir * RotationControl * Time.deltaTime);
         }
+        //playermain.rb.AddTorque(-Vector2.SignedAngle(playermain.rb.velocity, -transform.right) * Mathf.Deg2Rad * RotationControl * Time.deltaTime * 5000);
     }
     Vector2 CalculateWingPhysics()
     {

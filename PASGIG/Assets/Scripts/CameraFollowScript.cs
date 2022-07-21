@@ -66,20 +66,10 @@ public class CameraFollowScript : MonoBehaviour
     {
         Vector2 centerPoint = GetCenterPoint();
         //Vector2 newPosition = centerPoint + offset;
-        /*
-        Vector2 VectorToTargetPos = (Vector2) transform.position - centerPoint;
-        float distToTargetPos = VectorToTargetPos.magnitude;
-        Debug.Log(distToTargetPos);
-        if (distToTargetPos > 10 || distToTargetPos < -10){
-            transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
-        }
-        */
 
         transform.position = Vector2.SmoothDamp(transform.position, centerPoint, ref velocity, smoothTime);
         //transform.position = Vector2.Lerp(transform.position, centerPoint, 0.6f*Time.deltaTime);
         //transform.position = Vector2.MoveTowards(transform.position, centerPoint, CameraSpeed*Time.deltaTime);
-
-        
         //transform.position = centerPoint;
     }
 
@@ -95,13 +85,15 @@ public class CameraFollowScript : MonoBehaviour
         var bounds = new Bounds(player.transform.position, Vector2.zero);
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i].tag == "Landscape") {
-                bounds.Encapsulate(targets[i].ClosestPoint(player.transform.position));
-            } else {
-                bounds.Encapsulate(targets[i].transform.position);
-            }
+            if (targets[i] != null) {
+                if (targets[i].tag == "Landscape") {
+                    bounds.Encapsulate(targets[i].ClosestPoint(player.transform.position));
+                } else {
+                    bounds.Encapsulate(targets[i].transform.position);
+                }
+            } 
         }
-        bounds.Encapsulate(transform.position);
+        //bounds.Encapsulate(transform.position);
         return bounds.size.magnitude;
     }
     Vector2 GetCenterPoint()
@@ -110,7 +102,6 @@ public class CameraFollowScript : MonoBehaviour
         {
             return targets[0].transform.position;
         }
-
         var bounds = new Bounds(player.transform.position, Vector2.zero);
         for (int i = 0; i < targets.Count; i++)
         {
