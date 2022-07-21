@@ -19,7 +19,6 @@ public class PlayerHP : MonoBehaviour
         playerscript = gameObject.GetComponent<PlayerMain>();
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +26,13 @@ public class PlayerHP : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
-    
+    private void Update() 
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            TakeDamage(10);
+        }     
+    }
 
     public void TakeDamage(int damage)
     {

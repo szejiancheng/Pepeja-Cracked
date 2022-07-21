@@ -31,13 +31,13 @@ public class TurretEnemy : MonoBehaviour
         if (GameObject.FindWithTag("Player") != null) {
             if(Time.time > nextFire) 
             {
-                SpawnMissile();
+                FireMissile();
                 nextFire = Time.time + fireRate;
             }
         }
     }
 
-    void SpawnMissile()
+    void FireMissile()
     {
         GameObject missile = Instantiate(MissilePrefab, muzzle.position, Quaternion.identity * Quaternion.Euler(0, 0, 90));
         missile.GetComponent<MissileBehaviour>().speed = 500f;

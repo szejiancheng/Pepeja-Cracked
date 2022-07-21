@@ -12,7 +12,10 @@ public class FlyingEnemy : MonoBehaviour
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
-        player = GameObject.FindWithTag("Player").transform;
+        if (GameObject.FindWithTag("Player") != null)
+        {
+            player = GameObject.FindWithTag("Player").transform.Find("Player Object");
+        }
     }
 
     // Update is called once per frame
