@@ -11,6 +11,8 @@ public class TurretCollision : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             SelfDestruct();
+            PlayerHP playerHP = collision.gameObject.GetComponent("PlayerHP") as PlayerHP;
+            playerHP.TakeDamage(10);
         }
 
         if(collision.gameObject.CompareTag("Bullet"))

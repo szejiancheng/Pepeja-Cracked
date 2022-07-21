@@ -8,9 +8,12 @@ public class KamikazeCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject.tag);
         if(collision.gameObject.CompareTag("Player"))
         {
             SelfDestruct();
+            PlayerHP playerHP = collision.gameObject.GetComponent("PlayerHP") as PlayerHP;
+            playerHP.TakeDamage(10);
         }
 
         if(collision.gameObject.CompareTag("Missile"))
@@ -26,6 +29,7 @@ public class KamikazeCollision : MonoBehaviour
 
     void SelfDestruct()
     {
+        Debug.Log("Kamikaze Destroyed!");
         Destroy(gameObject);
     }
 
@@ -38,3 +42,6 @@ public class KamikazeCollision : MonoBehaviour
         }
     }
 }
+
+
+
