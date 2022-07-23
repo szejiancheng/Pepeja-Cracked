@@ -6,8 +6,8 @@ public class TurretEnemy : MonoBehaviour
 {
     public GameObject MissilePrefab;
     public Transform muzzle;
-
-    float fireRate;
+    public EnemySpawner spawner;
+    float fireInterval;
     float nextFire;
     
     public Transform target;
@@ -16,7 +16,7 @@ public class TurretEnemy : MonoBehaviour
 
     void Start()
     {
-        fireRate = 5f;
+        fireInterval = 5f;
         nextFire = Time.time;
     }
 
@@ -28,12 +28,15 @@ public class TurretEnemy : MonoBehaviour
 
     void CheckFire()
     {
-        if (GameObject.FindWithTag("Player") != null) {
+        if (target != null) {
             if(Time.time > nextFire) 
             {
                 FireMissile();
-                nextFire = Time.time + fireRate;
+                nextFire = Time.time + fireInterval;
             }
+        } else 
+        {
+            target = spawner.playerTransform;
         }
     }
 

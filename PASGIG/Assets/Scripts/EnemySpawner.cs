@@ -18,8 +18,9 @@ public class EnemySpawner : MonoBehaviour
     public float MinX = -90f;
     public float MaxY = 50f;
     public float MinY = -30f;
-
     public float FloorY = -40f;
+
+    public Transform playerTransform;
  
 
 
@@ -30,10 +31,20 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(spawnGroundEnemy(turretInterval, turretPrefab));
     }
 
+    private void Update() 
+    {
+        if (playerTransform == null)
+        {
+            //try to find player
+            playerTransform = GameObject.FindWithTag("Player Object").transform;
+        }    
+    }
+
     private IEnumerator spawnFlyingEnemy(float interval, GameObject enemy)
     {
         yield return new WaitForSeconds(interval);
         GameObject newEnemy = Instantiate(enemy, new Vector2(Random.Range(MinX, MaxX), Random.Range(MinY, MaxY)), Quaternion.identity);
+        newEnemy.GetComponent<FlyingEnemy>().spawner = GetComponent<EnemySpawner>();
         StartCoroutine(spawnFlyingEnemy(interval, enemy));
     }
 
@@ -41,6 +52,7 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(interval);
         GameObject newEnemy = Instantiate(enemy, new Vector2(Random.Range(MinX, MaxX), Random.Range(FloorY-5, FloorY)), Quaternion.identity);
+        newEnemy.GetComponent<TurretEnemy>().spawner = GetComponent<EnemySpawner>();
         StartCoroutine(spawnGroundEnemy(interval, enemy));
     }
 }

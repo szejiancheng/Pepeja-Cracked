@@ -5,6 +5,7 @@ using UnityEngine;
 public class FlyingEnemy : MonoBehaviour
 {
     public Transform player;
+    public EnemySpawner spawner;
     public float moveSpeed;
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -14,7 +15,7 @@ public class FlyingEnemy : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
         if (GameObject.FindWithTag("Player") != null)
         {
-            player = GameObject.FindWithTag("Player").transform.Find("Player Object");
+            player = spawner.playerTransform;
         }
     }
 
@@ -28,6 +29,8 @@ public class FlyingEnemy : MonoBehaviour
             rb.rotation = angle;
             direction.Normalize();
             movement = direction;
+        } else {
+            player = spawner.playerTransform;
         }
     }
 
