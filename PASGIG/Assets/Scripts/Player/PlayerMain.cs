@@ -12,6 +12,7 @@ public class PlayerMain : MonoBehaviour
     private PlayerHP playerhp;
     private PlayerCollision collision;
     private Joystick joystick;
+    public PlayerSpawner playerSpawner; //assigned at instantiation
 
 
     private void Awake() {
@@ -27,7 +28,6 @@ public class PlayerMain : MonoBehaviour
         playerhp = gameObject.GetComponent<PlayerHP>();
         collision = gameObject.GetComponent<PlayerCollision>();
         joystick = (Joystick) GameObject.Find("Fixed Joystick").GetComponent<Joystick>();
-        Debug.Log("Joystick isnull:" + joystick);
     }
 
     public float getJoyStickX()
@@ -42,6 +42,11 @@ public class PlayerMain : MonoBehaviour
     public Vector2 getJoyStickDir()
     {
         return joystick.Direction;
+    }
+
+    public void DestroyPlayer()
+    {
+        playerSpawner.PlayerDestroyed();
     }
     
     // Update is called once per frame

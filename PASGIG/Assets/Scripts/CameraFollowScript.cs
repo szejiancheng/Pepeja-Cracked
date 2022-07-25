@@ -42,7 +42,7 @@ public class CameraFollowScript : MonoBehaviour
             if (GameObject.FindWithTag("Player") != null)
             {
                 player = GameObject.FindWithTag("Player").GetComponentInChildren<Collider2D>();
-                Debug.Log("Player reference: " + player);
+                //Debug.Log("Player reference: " + player);
             }
         }
         

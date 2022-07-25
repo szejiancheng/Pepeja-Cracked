@@ -8,10 +8,10 @@ public class TurretCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        if(collision.gameObject.CompareTag("Player Object"))
         {
             SelfDestruct();
-            PlayerHP playerHP = collision.gameObject.GetComponent("PlayerHP") as PlayerHP;
+            PlayerHP playerHP = collision.gameObject.GetComponentInChildren<PlayerHP>() as PlayerHP;
             playerHP.TakeDamage(10);
         }
 
@@ -23,7 +23,8 @@ public class TurretCollision : MonoBehaviour
 
     void SelfDestruct()
     {
-        Destroy(gameObject);
+        Debug.Log("Turret Destroyed!");
+        enemyHP.TakeDamage(enemyHP.maxHealth);
     }
 
     void DoDamageToEnemy(int damagetaken)

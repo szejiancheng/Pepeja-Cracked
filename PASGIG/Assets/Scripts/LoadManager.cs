@@ -91,7 +91,7 @@ public class LoadManager : MonoBehaviour
     */
 
    public void onClickDemo () {
-       SceneManager.LoadScene("Game");
+       SceneManager.LoadScene("Game Rework");
    }
 
     void updatefields()

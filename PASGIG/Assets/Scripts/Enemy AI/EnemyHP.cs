@@ -6,24 +6,16 @@ public class EnemyHP : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
-    public PlayerScore playerScore;
+    public GameObject DestEffect;
 
-    //Enemy HP bar is currently jittery when enemy rotates, temporarily disabled
-    //public EnemyHPBar healthBar;
-    
     void Awake()
     {
-        playerScore = GameObject.FindWithTag("Player").GetComponent<PlayerScore>();
+
     }
 
     void Start()
     {
         currentHealth = maxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     public void TakeDamage(int damage)
@@ -37,7 +29,9 @@ public class EnemyHP : MonoBehaviour
 
     void EnemyDestroyed()
     {
-        playerScore.AddScore(maxHealth);
+        Instantiate(DestEffect, transform.position, transform.rotation);
+        GameMasterScript.GetInstance().AddScore(maxHealth);
+        //playerScore.AddScore(maxHealth);
         Destroy(gameObject);
     }
 }

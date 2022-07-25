@@ -8,20 +8,23 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
-        {
-            DoDamageToPlayer(10);
-        }
+        // if(collision.gameObject.CompareTag("Enemy"))
+        // {
+        //     DoDamageToPlayer(10);
+        // }
 
-        if(collision.gameObject.CompareTag("Missile"))
-        {
-            DoDamageToPlayer(2);
-        }
+        // if(collision.gameObject.CompareTag("Missile"))
+        // {
+        //     DoDamageToPlayer(2);
+        // }
     }
 
     void DoDamageToPlayer(int damagetaken)
     {
-        Debug.Log("Took Damage!");
-        playerHP.TakeDamage(damagetaken);
+        // Debug.Log("Took Damage!");
+        // playerHP.TakeDamage(damagetaken);
     }
 }
+
+
+

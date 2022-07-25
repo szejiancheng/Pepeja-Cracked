@@ -126,6 +126,7 @@ MonoBehaviour:
   maxLifetime: 3
   turnSpeed: 0.9
   directionFacing: -90
+  DestEffect: {fileID: 6508217065263521358, guid: 7588b1827f5fbe440889210c770a935a, type: 3}
 --- !u!70 &6784402733650794925
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

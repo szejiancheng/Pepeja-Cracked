@@ -10,7 +10,7 @@ public class bulletBehaviour : MonoBehaviour
     // Update is called once per frame
     void Start ()
     {
-        rb.AddForce(transform.right * speed, ForceMode2D.Impulse);
+        rb.AddForce(-transform.right * speed, ForceMode2D.Impulse);
     }
 
     private void Update()

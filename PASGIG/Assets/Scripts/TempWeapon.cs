@@ -17,7 +17,7 @@ public class TempWeapon : MonoBehaviour
         }
     }
 
-    void Shoot()
+    public void Shoot()
     {
         GameObject currentBullet = Instantiate(bulletPrefab, muzzle.position, muzzle.rotation);
         

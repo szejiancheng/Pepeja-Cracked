@@ -12,11 +12,12 @@ public class PlayerHP : MonoBehaviour
     public GameOverScript gameover;
     public PlayerScore playerscore;
 
-    public PlayerMain playerscript;
+    public PlayerMain playerMain;
+    public GameObject DestPrefab;
 
     void Awake()
     {
-        playerscript = gameObject.GetComponent<PlayerMain>();
+        playerMain = gameObject.GetComponent<PlayerMain>();
     }
 
     // Start is called before the first frame update
@@ -28,33 +29,24 @@ public class PlayerHP : MonoBehaviour
 
     private void Update() 
     {
+        /***
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             TakeDamage(10);
-        }     
+        } 
+        ***/    
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        Debug.Log("Took damage: " + damage);
 
         healthBar.SetHealth(currentHealth);
 
          if(currentHealth < 0)
          {
-             PlayerDestroyed();
+             playerMain.DestroyPlayer();
          }
-    }
-
-    void PlayerDestroyed()
-    {
-        //Destroy(gameObject);
-        GameOver();
-
-    }
-
-    void GameOver()
-    {
-        //gameover.InitScore(playerscore.score);
     }
 }

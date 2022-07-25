@@ -11,12 +11,11 @@ public class GameOverScript : MonoBehaviour
     public GameObject gameUI;
     public GameObject gameOverScreen;
 
-    public void InitScore(int score)
-    {
-        gameOverScreen.SetActive(true);
-        pointsText.text = "Score: " + score.ToString();
-        gameUI.SetActive(false);
+    private void OnEnable() {
+        pointsText.text = "You attained a combat score of " + GameMasterScript.GetInstance().CombatScore + ", good work pilot";
     }
+
+
 
     public void RestartButton() 
     {

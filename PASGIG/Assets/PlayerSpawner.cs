@@ -9,6 +9,8 @@ public class PlayerSpawner : MonoBehaviour
     public GameObject playerPrefab; 
     public GameObject beamPrefab; 
     public GameObject spawnExplosionPrefab; 
+    public GameObject destExplosionPrefab;
+
     public GameObject player;
     public float playerSpeed;
     public float spawnLaunch;
@@ -46,6 +48,11 @@ public class PlayerSpawner : MonoBehaviour
         } 
     }
 
+    public void PlayerDestroyed()
+    {
+        StartCoroutine(DestroyPlayer());
+    }
+
     IEnumerator Respawn()
     {
         Destroy(player);
@@ -54,16 +61,20 @@ public class PlayerSpawner : MonoBehaviour
         StartCoroutine(SpawnPlayer());
     }   
 
-    IEnumerator SpawnPlayer()
+    public IEnumerator SpawnPlayer()
     {
         player = Instantiate(playerPrefab, getNextSpawnPoint().position, getNextSpawnPoint().rotation);
         player.GetComponentInChildren<PlanePhysics>().Speed = playerSpeed;
+        player.GetComponentInChildren<PlayerMain>().playerSpawner = GetComponent<PlayerSpawner>();
 
         //Freeze player
         Rigidbody2D playerRb = player.GetComponentInChildren<Rigidbody2D>();
         playerRb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
         SpriteRenderer sprite = player.GetComponentInChildren<SpriteRenderer>();
         sprite.enabled = false;
+        Collider2D collider = player.GetComponentInChildren<Collider2D>();
+        yield return new WaitForSeconds(1);
+        collider.enabled = false;
         
         
 
@@ -75,11 +86,26 @@ public class PlayerSpawner : MonoBehaviour
 
         playerRb.constraints = RigidbodyConstraints2D.FreezeRotation;
         sprite.enabled = true;
+        collider.enabled = true;
         playerRb.AddForce(-playerRb.transform.right * spawnLaunch);
 
         GameObject spawnExplosion = Instantiate(spawnExplosionPrefab, nextSpawnPoint.position, nextSpawnPoint.rotation);
         yield return new WaitForSeconds(2);
+        Destroy(spawnExplosion);
 
         nextSpawnPoint = null;
+    }
+
+    public IEnumerator DestroyPlayer()
+    {
+        Debug.Log("Destroying Player");
+        Debug.Log("spawning explosion");
+        GameObject DestructExplosion = Instantiate(destExplosionPrefab, player.transform.Find("Player Object").position, player.transform.Find("Player Object").rotation);
+        Destroy(player);
+        yield return new WaitForSeconds(2);
+        Destroy(DestructExplosion);
+        Debug.Log("destroying explosion");
+
+        GameMasterScript.GetInstance().RespawnPlayer();
     }
 }

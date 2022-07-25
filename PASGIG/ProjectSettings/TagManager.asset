@@ -8,6 +8,9 @@ TagManager:
   - Bullet
   - Enemy
   - Missile
+  - New tag
+  - a
+  - Player Object
   layers:
   - Default
   - TransparentFX
@@ -16,7 +19,7 @@ TagManager:
   - Water
   - UI
   - test
-  - 
+  - Camera
   - 
   - 
   - 

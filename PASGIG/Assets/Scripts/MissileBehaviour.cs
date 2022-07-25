@@ -11,7 +11,9 @@ public class MissileBehaviour : MonoBehaviour
     private Vector2 movement;
     public float turnSpeed = 0.5f;
     public float directionFacing;
-    
+    public GameObject DestEffect;
+
+
     void Start ()
     {
         rb.AddForce(transform.right * speed, ForceMode2D.Impulse);
@@ -33,23 +35,26 @@ public class MissileBehaviour : MonoBehaviour
             Vector3 direction = player.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             directionFacing = angle * turnSpeed;
-            
+
         }
     }
 
     private void Explode () 
     {
+        Instantiate(DestEffect, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Debug.Log("An enemy hit you!");
-        
-        if(collision.gameObject.CompareTag("Player"))
+
+        if(collision.gameObject.CompareTag("Player Object"))
         {
             Debug.Log("An enemy hit you!");
             Explode();
+            PlayerHP playerHP = collision.gameObject.GetComponent("PlayerHP") as PlayerHP;
+            playerHP.TakeDamage(5);
         }
         Explode();
     }
@@ -69,4 +74,6 @@ public class MissileBehaviour : MonoBehaviour
         rb.rotation = directionFacing;
         rb.AddForce(transform.right * speed);
     }
+    
+    
 }

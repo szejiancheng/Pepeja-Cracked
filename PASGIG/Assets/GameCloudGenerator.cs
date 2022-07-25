@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CloudGenerator : MonoBehaviour
+public class GameCloudGenerator : MonoBehaviour
 {
 
     [SerializeField]
@@ -31,14 +31,14 @@ public class CloudGenerator : MonoBehaviour
         int randomIndex = UnityEngine.Random.Range(0, clouds.Length);
         GameObject cloud = Instantiate(clouds[randomIndex]);
 
-        float startY = UnityEngine.Random.Range(startPos.y - 1f, startPos.y + 3f);
+        float startY = UnityEngine.Random.Range(startPos.y - 100f, startPos.y + 300f);
 
         cloud.transform.position = new Vector3(startPos.x, startY, startPos.z);
 
-        float scale = UnityEngine.Random.Range(0.08f, 0.15f);
+        float scale = UnityEngine.Random.Range(10f, 50f);
         cloud.transform.localScale = new Vector2(scale, scale);
 
-        float speed = UnityEngine.Random.Range(0.2f, 1.3f);
+        float speed = UnityEngine.Random.Range(5f, 100f);
         cloud.GetComponent<CloudScript>().StartFloating(speed, endPoint.transform.position.x);
 
 
@@ -56,7 +56,7 @@ public class CloudGenerator : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            Vector3 spawnPos = startPos + Vector3.right * (i * 4);
+            Vector3 spawnPos = startPos + Vector3.right * (i * 1000);
             SpawnCloud(spawnPos);
         }
     }
