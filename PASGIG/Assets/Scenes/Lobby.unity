@@ -756,14 +756,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FirstTimeLogin: 0
   Username: 
-  GamesPlayed: 0
-  GamesWon: 0
   HighScore: 0
+  GamesPlayed: 0
+  CumulativeScore: 
   usernameTextField: {fileID: 994420552}
   emailTextField: {fileID: 0}
-  GamesPlayedField: {fileID: 338737316}
-  GamesWonField: {fileID: 1449126288}
   HighScoreField: {fileID: 1370156150}
+  GamesPlayedField: {fileID: 338737316}
+  CumulativeScoreField: {fileID: 1449126288}
 --- !u!4 &443083531
 Transform:
   m_ObjectHideFlags: 0
@@ -953,6 +953,7 @@ MonoBehaviour:
   - {fileID: 1886426548699640280, guid: 75339280f81da8e4eb6fdc48da9fd531, type: 3}
   spawnInterval: 3
   endPoint: {fileID: 67704388}
+  startPos: {x: 0, y: 0, z: 0}
 --- !u!4 &576398726
 Transform:
   m_ObjectHideFlags: 0
@@ -2493,7 +2494,7 @@ GameObject:
   - component: {fileID: 1449126287}
   - component: {fileID: 1449126288}
   m_Layer: 5
-  m_Name: GamesWon field
+  m_Name: Cumulative Score field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2628,7 +2629,7 @@ GameObject:
   - component: {fileID: 1474740271}
   - component: {fileID: 1474740270}
   m_Layer: 5
-  m_Name: placeholder Games Won
+  m_Name: placeholder Cumulative Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2644,7 +2645,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1449126286}
   m_Father: {fileID: 741776993}
@@ -2675,7 +2676,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Games Won: '
+  m_text: 'Cumulative Score: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2702,10 +2703,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 29.15
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

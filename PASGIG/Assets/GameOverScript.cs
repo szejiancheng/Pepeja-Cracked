@@ -10,12 +10,25 @@ public class GameOverScript : MonoBehaviour
     public TMP_Text pointsText;
     public GameObject gameUI;
     public GameObject gameOverScreen;
+    public IngameFirebaseManager firebaseManager;
 
     private void OnEnable() {
-        pointsText.text = "You attained a combat score of " + GameMasterScript.GetInstance().CombatScore + ", good work pilot";
+        StartCoroutine(UpdateData());
+        
     }
 
+    IEnumerator UpdateData()
+    {
+        yield return new WaitForSeconds(1);
 
+        firebaseManager.SaveData();
+
+        
+        pointsText.text = "You attained a combat score of " + GameMasterScript.GetInstance().CombatScore + ", good work pilot " + firebaseManager.Username + ".";
+    }
+    private void Update() {
+        
+    }
 
     public void RestartButton() 
     {
