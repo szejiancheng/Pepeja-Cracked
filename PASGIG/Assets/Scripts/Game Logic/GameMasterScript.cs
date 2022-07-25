@@ -11,6 +11,7 @@ public class GameMasterScript : MonoBehaviour
     public int LivesLeft = 3;
 
     public PlayerSpawner playerSpawner;
+    public EnemySpawner enemySpawner;
     public GameObject GameOverScreen;
     
 
@@ -34,6 +35,7 @@ public class GameMasterScript : MonoBehaviour
 
     private void Start() {
         SetFramerate();
+        GameStart();
     }
 
     public void RespawnPlayer()
@@ -69,13 +71,15 @@ public class GameMasterScript : MonoBehaviour
         //Assign player position, spawn player in
         //Unfreeze player position, start enemy spawner
         //
+        enemySpawner.enabled = true;
+        StartCoroutine(playerSpawner.SpawnPlayer());
     }
 
     void GameOver()
     {
         //Disable control UI, bring up GameOver UI
         //Disable enemy spawner
-
+        enemySpawner.enabled = false;
     }
 
     void SetFramerate()

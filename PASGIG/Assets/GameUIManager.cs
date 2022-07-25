@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class GameUIManager : MonoBehaviour
         PauseMenu.SetActive(false);
         GameMasterScript.GetInstance().Unpause();
         GameUI.SetActive(true);        
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 
 
